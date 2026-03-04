@@ -1,0 +1,117 @@
+{
+  "name": "faah-terminal-sound",
+  "displayName": "FAAH Terminal Sound",
+  "description": "Plays FAAH sound when terminal errors occur",
+  "version": "1.0.0",
+  "publisher": "raghul-tech",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/raghul-tech/faah-terminal-sound"
+  },
+  "engines": {
+    "vscode": "^1.109.0"
+  },
+  "categories": [
+    "Other"
+  ],
+  "activationEvents": [
+    "onStartupFinished",
+    "onLanguage"
+  ],
+  "main": "./dist/extension.js",
+  "contributes": {
+    "commands": [
+      {
+        "command": "faah-terminal.toggle",
+        "title": "FAAH: Toggle Sound"
+      },
+      {
+        "command": "faah-terminal.testSound",
+        "title": "FAAH: Test Sound"
+      },
+      {
+        "command": "faah-terminal.selectSound",
+        "title": "FAAH: Select Custom Sound"
+      }
+    ],
+    "configuration": {
+      "title": "FAAH Terminal",
+      "properties": {
+        "faah-terminal.enabled": {
+          "type": "boolean",
+          "default": true,
+          "description": "Enable/disable FAAH sound"
+        },
+        "faah-terminal.cooldown": {
+          "type": "number",
+          "default": 3000,
+          "description": "Cooldown between sounds in milliseconds"
+        },
+        "faah-terminal.monitorTerminal": {
+          "type": "boolean",
+          "default": true,
+          "description": "Monitor terminal for errors"
+        },
+        "faah-terminal.monitorDiagnostics": {
+          "type": "boolean",
+          "default": true,
+          "description": "Monitor editor diagnostics for errors"
+        },
+        "faah-terminal.errorPatterns": {
+          "type": "array",
+          "default": ["error", "failed", "exception", "not found"],
+          "description": "Regex patterns to detect errors in terminal output"
+        },
+        "faah-terminal.includeWarnings": {
+          "type": "boolean",
+          "default": false,
+          "description": "Play sound for warnings as well as errors"
+        },
+        "faah-terminal.quietHours": {
+          "type": "object",
+          "default": {
+            "enabled": false,
+            "start": "22:00",
+            "end": "08:00"
+          },
+          "description": "Quiet hours when sound is muted"
+        },
+        "faah-terminal.customSoundPath": {
+          "type": "string",
+          "default": "",
+          "description": "Path to custom sound file (WAV or MP3)"
+        }
+      }
+    }
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run package",
+    "compile": "npm run check-types && npm run lint && node esbuild.js",
+    "watch": "npm-run-all -p watch:*",
+    "watch:esbuild": "node esbuild.js --watch",
+    "watch:tsc": "tsc --noEmit --watch --project tsconfig.json",
+    "package": "npm run check-types && npm run lint && node esbuild.js --production",
+    "compile-tests": "tsc -p . --outDir out",
+    "watch-tests": "tsc -p . -w --outDir out",
+    "pretest": "npm run compile-tests && npm run compile && npm run lint",
+    "check-types": "tsc --noEmit",
+    "lint": "eslint src",
+    "test": "vscode-test"
+  },
+  "devDependencies": {
+    "@types/vscode": "^1.109.0",
+    "@types/mocha": "^10.0.10",
+    "@types/node": "22.x",
+    "typescript-eslint": "^8.56.1",
+    "eslint": "^9.39.3",
+    "esbuild": "^0.27.3",
+    "npm-run-all": "^4.1.5",
+    "typescript": "^5.9.3",
+    "@vscode/test-cli": "^0.0.12",
+    "@vscode/test-electron": "^2.5.2"
+  },
+  "files": [
+    "dist",
+    "media"
+  ]
+}
