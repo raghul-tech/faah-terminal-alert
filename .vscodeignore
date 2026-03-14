@@ -2,7 +2,6 @@
 .vscode-test/**
 out/**
 node_modules/**
-src/**
 .gitignore
 .yarnrc
 esbuild.js
@@ -11,4 +10,8 @@ vsc-extension-quickstart.md
 **/eslint.config.mjs
 **/*.map
 **/*.ts
-**/.vscode-test.*
+
+# Don't ignore media folder and sound files
+!media/**
+!**/*.wav
+!**/*.mp3
