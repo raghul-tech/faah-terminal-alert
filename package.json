@@ -96,34 +96,27 @@
       }
     ]
   },
-  "enabledApiProposals": [
-    "terminalDataWriteEvent"
-  ],
   "scripts": {
-    "vscode:prepublish": "npm run package",
-    "compile": "npm run check-types && npm run lint && node esbuild.js",
-    "watch": "npm-run-all -p watch:*",
-    "watch:esbuild": "node esbuild.js --watch",
-    "watch:tsc": "tsc --noEmit --watch --project tsconfig.json",
-    "package": "npm run check-types && npm run lint && node esbuild.js --production",
-    "check-types": "tsc --noEmit",
-    "lint": "eslint src",
-    "build": "npm run package",
-    "dev": "npm run watch",
-    "clean": "rm -rf dist out node_modules"
+    "vscode:prepublish": "npm run build",
+    "build": "node esbuild.js --production",
+    "watch": "node esbuild.js --watch",
+    "compile": "node esbuild.js",
+    "package": "vsce package",
+    "lint": "eslint src --ext .ts",
+    "clean": "rm -rf dist node_modules"
   },
   "devDependencies": {
-    "@types/mocha": "^10.0.10",
     "@types/node": "^18.18.0",
-    "@types/play-sound": "^1.1.2",
     "@types/vscode": "^1.74.0",
     "@typescript-eslint/eslint-plugin": "^8.57.0",
     "@typescript-eslint/parser": "^8.57.0",
     "esbuild": "^0.27.4",
     "eslint": "^10.0.3",
-    "npm-run-all": "^4.1.5",
     "typescript": "^5.3.3",
-    "typescript-eslint": "^8.57.0"
+    "vsce": "^2.15.0"
+  },
+  "dependencies": {
+    "play-sound": "^1.1.6"
   },
   "icon": "media/icon.png",
   "keywords": [
@@ -135,8 +128,5 @@
     "notification",
     "faah",
     "beep"
-  ],
-  "dependencies": {
-    "play-sound": "^1.1.6"
-  }
+  ]
 }
