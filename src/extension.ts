@@ -1,5 +1,6 @@
 import * as vscode from 'vscode';
-import { SoundManager } from './SoundManager';
+import { SoundManager } from './soundManager';
+import {errorPatterns} from './errorPatterns';
 
 let soundManager: SoundManager;
 let outputChannel: vscode.OutputChannel;
@@ -10,9 +11,6 @@ let statusBarItem: vscode.StatusBarItem;
 export function activate(context: vscode.ExtensionContext) {
     // Create output channel for debugging
     outputChannel = vscode.window.createOutputChannel('FAAH Terminal');
-    outputChannel.appendLine('═══════════════════════════════════');
-    outputChannel.appendLine('FAAH Terminal Sound Extension');
-    outputChannel.appendLine('═══════════════════════════════════');
     
     // Initialize sound manager
     soundManager = new SoundManager(context, outputChannel);
@@ -41,18 +39,6 @@ export function activate(context: vscode.ExtensionContext) {
     context.subscriptions.push(outputChannel);
     context.subscriptions.push({ dispose: () => soundManager.cleanup() });
     
-    outputChannel.appendLine('✓ Extension ready - monitoring for terminal errors');
-    outputChannel.appendLine('═══════════════════════════════════');
-    
-    // Quick test
-    setTimeout(() => {
-        outputChannel.appendLine('Testing sound...');
-        soundManager.testSound().then(ms => {
-            outputChannel.appendLine(`✓ Sound test: ${ms}ms`);
-        }).catch(() => {
-            outputChannel.appendLine('⚠ Sound test failed');
-        });
-    }, 1000);
 }
 
 function updateStatusBar(): void {
@@ -73,26 +59,12 @@ function registerCommands(context: vscode.ExtensionContext): void {
         })
     );
     
-    // Test sound
-    context.subscriptions.push(
-        vscode.commands.registerCommand('faah-terminal.testSound', async () => {
-            if (!soundEnabled) {
-                vscode.window.showWarningMessage('FAAH sound is disabled');
-                return;
-            }
-            
-            outputChannel.appendLine('Testing sound...');
-            const ms = await soundManager.testSound();
-            vscode.window.showInformationMessage(`Sound test: ${ms}ms`);
-            outputChannel.appendLine(`Test completed: ${ms}ms`);
-        })
-    );
 }
 
 function setupTerminalMonitoring(context: vscode.ExtensionContext, config: vscode.WorkspaceConfiguration): void {
     // Monitor shell execution (primary method)
     if (vscode.window.onDidEndTerminalShellExecution) {
-        outputChannel.appendLine('✓ Shell execution monitoring active');
+        outputChannel.appendLine('Shell execution monitoring active');
         
         context.subscriptions.push(
             vscode.window.onDidEndTerminalShellExecution(async (e) => {
@@ -105,22 +77,19 @@ function setupTerminalMonitoring(context: vscode.ExtensionContext, config: vscod
                     
                     if (now - lastPlayed >= cooldown) {
                         lastPlayed = now;
-                        outputChannel.appendLine(`🔴 Command failed (exit: ${exitCode})`);
+                        outputChannel.appendLine(`Command failed (exit: ${exitCode})`);
                         soundManager.play().catch(() => {});
                     }
                 }
             })
         );
     } else {
-        outputChannel.appendLine('⚠ Shell execution monitoring not available');
+        outputChannel.appendLine(' Shell execution monitoring not available');
     }
 }
 
 function setupTextMonitoring(context: vscode.ExtensionContext, config: vscode.WorkspaceConfiguration): void {
-    outputChannel.appendLine('✓ Text pattern monitoring active');
-    
-    // Fast error patterns
-    const errorPatterns = /not recognized|command not found|error|failed|fatal|exception|cannot|unable to/i;
+    outputChannel.appendLine('Text pattern monitoring active');
     
     context.subscriptions.push(
         vscode.workspace.onDidChangeTextDocument((e) => {
@@ -138,7 +107,7 @@ function setupTextMonitoring(context: vscode.ExtensionContext, config: vscode.Wo
                     
                     if (now - lastPlayed >= cooldown) {
                         lastPlayed = now;
-                        outputChannel.appendLine(`🔴 Terminal error detected`);
+                        outputChannel.appendLine(` Terminal error detected`);
                         soundManager.play().catch(() => {});
                     }
                 }

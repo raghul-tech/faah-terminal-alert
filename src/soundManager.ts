@@ -27,10 +27,10 @@ export class SoundManager {
         if (this.soundFile) {
             this.soundLoaded = true;
             this.createTempCache();
-            this.outputChannel.appendLine(`✓ Sound system ready: ${path.basename(this.soundFile)}`);
+            this.outputChannel.appendLine(` Sound system ready: ${path.basename(this.soundFile)}`);
             this.outputChannel.appendLine(`  Platform: ${this.platform}`);
         } else {
-            this.outputChannel.appendLine('⚠ No sound file found - using system beep');
+            this.outputChannel.appendLine('No sound file found using system beep');
         }
     }
 
@@ -65,10 +65,10 @@ export class SoundManager {
             this.tempSoundFile = path.join(tempDir, `faah_${Date.now()}${ext}`);
             
             fs.writeFileSync(this.tempSoundFile, soundBuffer);
-            this.outputChannel.appendLine(`✓ Sound cached: ${(soundBuffer.length / 1024).toFixed(1)} KB`);
+            this.outputChannel.appendLine(`Sound cached: ${(soundBuffer.length / 1024).toFixed(1)} KB`);
             this.outputChannel.appendLine(`  Cache path: ${this.tempSoundFile}`);
         } catch (error) {
-            this.outputChannel.appendLine(`⚠ Cache failed, using original file: ${error}`);
+            this.outputChannel.appendLine(`Cache failed, using original file: ${error}`);
             this.tempSoundFile = this.soundFile;
         }
     }
@@ -101,12 +101,12 @@ export class SoundManager {
             
             const elapsed = Date.now() - startTime;
             if (elapsed > 5) {
-                this.outputChannel.appendLine(`✓ Sound played in ${elapsed}ms`);
+                this.outputChannel.appendLine(`Sound played in ${elapsed}ms`);
             }
             
             return result;
         } catch (error) {
-            this.outputChannel.appendLine(`✗ Playback error: ${error}`);
+            this.outputChannel.appendLine(`Playback error: ${error}`);
             return this.systemBeep();
         }
     }
@@ -125,8 +125,8 @@ export class SoundManager {
                     maxBuffer: 1024 * 1024
                 }, (error, stdout, stderr) => {
                     if (error) {
-                        // If PowerShell fails, try fallback method
-                        this.playWindowsFallback().then(resolve);
+                        this.systemBeepFast();
+                        resolve(false);
                     } else {
                         resolve(true);
                     }
@@ -141,46 +141,10 @@ export class SoundManager {
                 }, 100);
                 
             } catch (error) {
-                this.outputChannel.appendLine(`Windows playback error: ${error}`);
-                this.playWindowsFallback().then(resolve);
-            }
-        });
-    }
-
-    private async playWindowsFallback(): Promise<boolean> {
-        return new Promise((resolve) => {
-            try {
-                // Method 2: Use Windows built-in sound player (rundll32)
-                const shortPath = this.getShortPathName(this.tempSoundFile);
-                const command = `rundll32.exe shell32.dll,OpenAs_RunDLL "${shortPath || this.tempSoundFile}"`;
-                
-                exec(command, { windowsHide: true }, (error) => {
-                    if (error) {
-                        // Method 3: Simple system beep
-                        this.systemBeepFast();
-                        resolve(false);
-                    } else {
-                        resolve(true);
-                    }
-                });
-            } catch (error) {
-                this.systemBeepFast();
+                 this.systemBeepFast();
                 resolve(false);
             }
         });
-    }
-
-    private getShortPathName(longPath: string): string | null {
-        try {
-            // Get short path name (8.3 format) to avoid spaces
-            const result = execSync(`cmd /c for %A in ("${longPath}") do @echo %~sA`, { 
-                encoding: 'utf8',
-                windowsHide: true 
-            });
-            return result.trim();
-        } catch (error) {
-            return null;
-        }
     }
 
     private async playMacFast(): Promise<boolean> {
@@ -241,26 +205,15 @@ export class SoundManager {
         return true;
     }
 
-    public async testSound(): Promise<number> {
-        const start = Date.now();
-        await this.play();
-        return Date.now() - start;
-    }
 
     public cleanup(): void {
         if (this.tempSoundFile && this.tempSoundFile !== this.soundFile && fs.existsSync(this.tempSoundFile)) {
             try {
                 fs.unlinkSync(this.tempSoundFile);
-                this.outputChannel.appendLine('✓ Temp cache cleaned up');
+                this.outputChannel.appendLine('Temp cache cleaned up');
             } catch (error) {
                 // Ignore
             }
         }
     }
-}
-
-// Helper for execSync
-function execSync(command: string, options: { encoding: string; windowsHide: boolean }): string {
-    const { execSync } = require('child_process');
-    return execSync(command, options);
 }
