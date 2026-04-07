@@ -1,5 +1,5 @@
 import * as vscode from 'vscode';
-import { SoundManager } from './SoundManager/faahSoundManager';
+import { SoundManager } from './SoundManager/SoundPlayer';
 
 let soundManager: SoundManager;
 let outputChannel: vscode.OutputChannel;
@@ -66,7 +66,9 @@ function setupTerminalMonitoring(context: vscode.ExtensionContext, config: vscod
                     if (now - lastPlayed >= cooldown) {
                         lastPlayed = now;
                         outputChannel.appendLine(`Command failed (exit: ${exitCode})`);
-                        soundManager.play().catch(() => {});
+                        soundManager.play().catch(() => {
+                            outputChannel.appendLine(`Failed to play sound`);
+                        });
                     }
                 }
             })
