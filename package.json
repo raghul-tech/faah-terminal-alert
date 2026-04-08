@@ -1,13 +1,24 @@
 {
-  "name": "faah-terminal-sound",
-  "displayName": "FAAH Terminal Sound",
+  "name": "faah-terminal-alert",
+  "displayName": "FAAH Terminal Alert",
   "description": "Plays FAAH sound when terminal errors occur",
   "version": "1.0.0",
   "publisher": "raghul-tech",
   "repository": {
     "type": "git",
-    "url": "https://github.com/raghul-tech/faah-terminal-sound"
+    "url": "https://github.com/raghul-tech/faah-terminal-alert"
   },
+   "icon": "media/icon.png",
+  "keywords": [
+    "terminal",
+    "error",
+    "sound",
+    "audio",
+    "alert",
+    "notification",
+    "faah",
+    "beep"
+  ],
   "engines": {
     "vscode": "^1.74.0"
   },
@@ -21,112 +32,49 @@
   "contributes": {
     "commands": [
       {
-        "command": "faah-terminal.toggle",
-        "title": "FAAH: Toggle Sound",
-        "category": "FAAH"
+        "command": "faah-terminal-alert.toggle",
+        "title": "FAAH Alert: Toggle Sound",
+        "category": "FAAH Terminal Alert"
       },
       {
-        "command": "faah-terminal.testSound",
-        "title": "FAAH: Test Sound",
-        "category": "FAAH"
+        "command": "faah-terminal-alert.debug",
+        "title": "FAAH Alert: Toggle Debug Logging",
+        "category": "FAAH Terminal Alert"
       }
     ],
     "configuration": {
-      "title": "FAAH Terminal",
+      "title": "FAAH Terminal Alert",
       "properties": {
-        "faah-terminal.enabled": {
+        "faah-terminal-alert.enabled": {
           "type": "boolean",
           "default": true,
           "description": "Enable/disable FAAH sound"
-        },
-        "faah-terminal.cooldown": {
-          "type": "number",
-          "default": 1000,
-          "minimum": 100,
-          "maximum": 10000,
-          "description": "Cooldown between sounds in milliseconds"
-        },
-        "faah-terminal.monitorTerminal": {
-          "type": "boolean",
-          "default": true,
-          "description": "Monitor terminal for errors"
-        },
-        "faah-terminal.errorPatterns": {
-          "type": "array",
-          "default": [
-            "error",
-            "failed",
-            "fail",
-            "fatal",
-            "exception",
-            "not found",
-            "command not found",
-            "permission denied",
-            "syntax error",
-            "undefined",
-            "cannot",
-            "unable to",
-            "could not",
-            "npm ERR!",
-            "traceback",
-            "Exception:",
-            "SyntaxError",
-            "TypeError",
-            "ReferenceError"
-          ],
-          "description": "Patterns to detect errors in terminal output"
-        },
-        "faah-terminal.quietHours": {
-          "type": "object",
-          "default": {
-            "enabled": false,
-            "start": "22:00",
-            "end": "08:00"
-          },
-          "description": "Quiet hours when sound is muted"
         }
       }
     },
     "keybindings": [
       {
-        "command": "faah-terminal.toggle",
+        "command": "faah-terminal-alert.toggle",
         "key": "ctrl+alt+f",
-        "mac": "cmd+alt+f",
-        "when": "editorTextFocus"
+        "mac": "cmd+alt+f"
+      },
+      {
+        "command": "faah-terminal-alert.debug",
+        "key": "ctrl+alt+d",
+        "mac": "cmd+alt+d"
       }
     ]
   },
-  "scripts": {
-    "vscode:prepublish": "npm run build",
+"scripts": {
     "build": "node esbuild.js --production",
     "watch": "node esbuild.js --watch",
-    "compile": "node esbuild.js",
-    "package": "vsce package",
-    "lint": "eslint src --ext .ts",
-    "clean": "rm -rf dist node_modules"
+    "package": "vsce package"
   },
   "devDependencies": {
     "@types/node": "^18.18.0",
     "@types/vscode": "^1.74.0",
-    "@typescript-eslint/eslint-plugin": "^8.57.0",
-    "@typescript-eslint/parser": "^8.57.0",
     "esbuild": "^0.27.4",
-    "eslint": "^10.0.3",
     "typescript": "^5.3.3",
     "vsce": "^2.15.0"
-  },
-  "dependencies": {
-    "play-sound": "^1.1.6"
-  },
-  "icon": "media/icon.png",
-  "keywords": [
-    "terminal",
-    "error",
-    "sound",
-    "audio",
-    "alert",
-    "notification",
-    "faah",
-    "beep"
-  ]
+  }
 }
