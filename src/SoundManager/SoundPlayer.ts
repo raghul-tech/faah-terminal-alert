@@ -1,9 +1,9 @@
 import * as vscode from 'vscode';
-import { spawn, exec } from 'child_process';
+import { spawn } from 'child_process';
 import * as fs from 'fs';
 import { AudioLoader } from './AudioLoader';
-import { Beeper } from './InstantBeep';
 import { ProcessManager } from './ProcessManager';
+import { SoundFallBack } from './SoundFallBack';
 
 export class SoundManager {
     private persistentProcess: any = null;
@@ -14,21 +14,19 @@ export class SoundManager {
     private minInterval: number = 100;
     private cachedSoundPath: string = "";
     private audioLoader: AudioLoader;
-    private beeper: Beeper;
     private processManager: ProcessManager;
 
     constructor(context: vscode.ExtensionContext, outputChannel: vscode.OutputChannel) {
         this.platform = process.platform;
         this.outputChannel = outputChannel;
-        this.audioLoader = new AudioLoader();
-        this.beeper = new Beeper();
+        this.audioLoader = new AudioLoader(context, outputChannel);
         this.processManager = new ProcessManager();
         
         if (this.platform === "win32") {
-            this.soundBase64 = this.audioLoader.loadSoundIntoMemory(context, outputChannel);
+            this.soundBase64 = this.audioLoader.loadSoundIntoMemory();
             this.outputChannel.appendLine(`Windows mode: Sound Base64 loaded (${this.soundBase64.length} chars)`);
         } else {
-            this.cachedSoundPath = this.audioLoader.createCachedSoundFile(context, outputChannel);
+            this.cachedSoundPath = this.audioLoader.createCachedSoundFile();
             this.outputChannel.appendLine(`Unix mode: Sound cached at ${this.cachedSoundPath}`);
         }
         this.startSoundProcess();
@@ -74,9 +72,8 @@ export class SoundManager {
 
         if (!this.soundBase64 && !this.cachedSoundPath) {
             this.outputChannel.appendLine(`No sound data available, using fallback beep`);
-            return this.beeper.instantBeep(this.platform);
+            return this.playFallback()
         }
-
         try {
             const startTime = Date.now();
             
@@ -112,25 +109,22 @@ export class SoundManager {
             return true;
         } catch (error) {
             this.outputChannel.appendLine(`Failed to play sound: ${error}`);
-            return this.beeper.instantBeep(this.platform);
+           return this.playFallback()
         }
     }
 
-    private playFallback(): void {
-        if (this.cachedSoundPath) {
-            this.outputChannel.appendLine(`Using fallback playback with cached file`);
-            if (this.platform === 'win32') {
-                exec(`powershell -c "(New-Object Media.SoundPlayer '${this.cachedSoundPath}').Play()"`, { windowsHide: true });
-            } else if (this.platform === 'darwin') {
-                exec(`afplay "${this.cachedSoundPath}" 2>/dev/null &`, { shell: '/bin/bash' });
-            } else {
-                exec(`aplay "${this.cachedSoundPath}" 2>/dev/null &`);
-            }
-        } else {
-            this.outputChannel.appendLine(`No fallback available, using beep`);
-            this.beeper.instantBeep(this.platform);
+    private async playFallback(): Promise<boolean> {
+        const fallback = new SoundFallBack(this.audioLoader);
+        switch (this.platform) {
+            case 'win32':
+                return fallback.winFallBack();    
+            case 'darwin':  
+                return fallback.macFallBack();
+            default:
+                return fallback.linuxFallBack();
         }
     }
+
 
     public cleanup(): void {
         if (this.persistentProcess) {
