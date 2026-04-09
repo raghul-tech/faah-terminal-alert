@@ -21,6 +21,19 @@ export class DebugService {
         return this.debugEnabled;
     }
 
+    public defaultMessage(): void {
+        this.message('FAAH Terminal Alert activated');
+        this.message(process.platform === 'darwin'
+            ? 'Sound: shortcut hint: cmd+alt+f to toggle sound'
+            : 'Sound: shortcut hint: ctrl+alt+f to toggle sound');
+        this.message(process.platform === 'darwin'
+            ? 'Debug: shortcut hint: cmd+alt+d to toggle debug'
+            : 'Debug: shortcut hint: ctrl+alt+d to toggle debug');
+        this.message(process.platform === 'darwin'
+            ? 'Test Sound: shortcut hint: cmd+alt+t to test sound'
+            : 'Test Sound: shortcut hint: ctrl+alt+t to test sound');
+    }
+
     public message(message: string): void {
         if (this.outputChannel) {
             this.outputChannel.appendLine(`[${this.getTimestamp()}] (MESSAGE) ${message}`);

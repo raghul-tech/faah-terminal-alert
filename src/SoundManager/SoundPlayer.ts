@@ -11,17 +11,20 @@ export class SoundManager {
     private soundBase64: string = "";
     private platform: string; 
     private lastPlayedTime: number = 0;
-    private minInterval: number = 100;
+    private cooldownMs: number = 1000;
     private cachedSoundPath: string = "";
     private audioLoader: AudioLoader;
     private processManager: ProcessManager;
     private debugService: DebugService;
 
-    constructor(context: vscode.ExtensionContext, debugService: DebugService) {
+    constructor(context: vscode.ExtensionContext, debugService: DebugService, cooldownMs?: number) {
         this.platform = process.platform;
         this.debugService = debugService;
         this.audioLoader = new AudioLoader(context, debugService);
         this.processManager = new ProcessManager();
+        if (typeof cooldownMs === 'number' && Number.isFinite(cooldownMs) && cooldownMs >= 0) {
+            this.cooldownMs = cooldownMs;
+        }
         this.debugService.debug(`SoundManager: initializing (platform='${this.platform}')`);
         
         if (this.platform === "win32") {
@@ -40,6 +43,22 @@ export class SoundManager {
             }
         }
         this.startSoundProcess();
+    }
+
+    public setCooldownMs(cooldownMs: number): void {
+        if (!Number.isFinite(cooldownMs) || cooldownMs < 0) return;
+        this.cooldownMs = cooldownMs;
+    }
+
+    public async testSound(): Promise<boolean> {
+        const previousLastPlayedTime = this.lastPlayedTime;
+        this.lastPlayedTime = 0;
+        try {
+            this.debugService.debug('SoundManager: testSound() invoked (bypassing cooldown)');
+            return await this.play();
+        } finally {
+            this.lastPlayedTime = previousLastPlayedTime;
+        }
     }
 
     private startSoundProcess(): void {
@@ -77,8 +96,8 @@ export class SoundManager {
 
     public async play(): Promise<boolean> {
         const now = Date.now();
-        if (now - this.lastPlayedTime < this.minInterval) {
-            this.debugService.debug(`SoundManager: play() skipped due to minInterval (${now - this.lastPlayedTime}ms/${this.minInterval}ms)`);
+        if (now - this.lastPlayedTime < this.cooldownMs) {
+            this.debugService.debug(`SoundManager: play() skipped due to cooldown (${now - this.lastPlayedTime}ms/${this.cooldownMs}ms)`);
             return false;
         }
         this.lastPlayedTime = now;

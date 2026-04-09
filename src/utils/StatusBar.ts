@@ -8,7 +8,12 @@ export class StatusBar {
             soundStatusBarItem.tooltip = soundEnabled ? "FAAH Terminal Alert: Enabled" : "FAAH Terminal Alert: Disabled";
         }
     }
-    
+    public updateTestSoundStatusBar(testSoundStatusBarItem: vscode.StatusBarItem): void {
+        if (testSoundStatusBarItem) {
+            testSoundStatusBarItem.text = '$(unmute) Test Sound';
+            testSoundStatusBarItem.tooltip = 'FAAH Terminal Alert: Play a test sound';
+        }
+    }
     public updateDebugStatusBar(debugStatusBarItem: vscode.StatusBarItem, debugEnabled: boolean): void {
         if (debugStatusBarItem) {
             debugStatusBarItem.text = debugEnabled ? "$(debug-alt) Debug ON" : "$(debug-alt-small) Debug OFF";

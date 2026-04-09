@@ -33,12 +33,17 @@
     "commands": [
       {
         "command": "faah-terminal-alert.toggle",
-        "title": "FAAH Alert: Toggle Sound",
+        "title": "Toggle Sound",
         "category": "FAAH Terminal Alert"
       },
       {
         "command": "faah-terminal-alert.debug",
-        "title": "FAAH Alert: Toggle Debug Logging",
+        "title": "Toggle Debug Logging",
+        "category": "FAAH Terminal Alert"
+      },
+      {
+        "command": "faah-terminal-alert.testSound",
+        "title": "Test Sound",
         "category": "FAAH Terminal Alert"
       }
     ],
@@ -49,6 +54,17 @@
           "type": "boolean",
           "default": true,
           "description": "Enable/disable FAAH sound"
+        },
+        "faah-terminal-alert.debugEnabled": {
+          "type": "boolean",
+          "default": false,
+          "description": "Enable/disable debug logging"
+        },
+        "faah-terminal-alert.cooldown": {
+          "type": "number",
+          "default": 1000,
+          "minimum": 0,
+          "description": "Minimum time in milliseconds between sounds (prevents spamming)"
         }
       }
     },
@@ -62,10 +78,15 @@
         "command": "faah-terminal-alert.debug",
         "key": "ctrl+alt+d",
         "mac": "cmd+alt+d"
+      },
+      {
+        "command": "faah-terminal-alert.testSound",
+        "key": "ctrl+alt+t",
+        "mac": "cmd+alt+t"
       }
     ]
   },
-"scripts": {
+  "scripts": {
     "build": "node esbuild.js --production",
     "watch": "node esbuild.js --watch",
     "package": "vsce package"
