@@ -4,7 +4,7 @@ import * as fs from 'fs';
 import { AudioLoader } from './AudioLoader';
 import { ProcessManager } from './ProcessManager';
 import { SoundFallBack } from './SoundFallBack';
-import { DebugService } from '../utils/DebugService';
+import { DebugService } from '../Services/DebugService';
 
 export class SoundManager {
     private persistentProcess: any = null;
