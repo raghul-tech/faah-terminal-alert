@@ -1,0 +1,11 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Questions & Support
+    url: mailto:raghul-tech.app@gmail.com
+    about: Please email us for questions, support, or general inquiries
+  - name: Feature Requests
+    url: https://github.com/raghul-tech/faah-terminal-alert/issues/new?assignees=&labels=enhancement&template=feature_request.md
+    about: Suggest new features or improvements
+  - name: Bug Reports
+    url: https://github.com/raghul-tech/faah-terminal-alert/issues/new?assignees=&labels=bug&template=bug_report.md
+    about: Report bugs or issues with the extension
