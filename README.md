@@ -152,6 +152,7 @@ Open VS Code Settings (`Ctrl+,`) and search for `faah-terminal-alert`.
 
 ### Prerequisites
 - VS Code Extension Development Host
+- Node.js (for npm scripts)
 
 ### Setup
 ```bash
@@ -173,6 +174,15 @@ Press `F5` in VS Code to open a new Extension Development Host window with your 
 ## 📄 License
 
 [MIT License](LICENSE)
+
+---
+
+## 📚 Additional Resources
+
+- [Privacy Policy](PRIVACY.md) - How we protect your privacy
+- [Support](SUPPORT.md) - Get help and troubleshooting
+- [Contributing](CONTRIBUTING.md) - How to contribute to the project
+- [Code of Conduct](CODE_OF_CONDUCT.md) - Our community guidelines
 
 ---
 
