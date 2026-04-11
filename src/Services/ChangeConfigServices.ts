@@ -1,4 +1,4 @@
-import { StatusBar } from "../utils/StatusBar";
+import { StatusBar } from "../StatusBar";
 import { DebugService } from "./DebugService";
 import * as vscode from 'vscode';
 import { SoundManager } from "../SoundManager/SoundPlayer";

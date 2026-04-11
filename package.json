@@ -8,7 +8,7 @@
     "type": "git",
     "url": "https://github.com/raghul-tech/faah-terminal-alert"
   },
-   "icon": "media/icon.png",
+  "icon": "media/icon.png",
   "keywords": [
     "terminal",
     "error",
@@ -127,13 +127,18 @@
   "scripts": {
     "build": "node esbuild.js --production",
     "watch": "node esbuild.js --watch",
-    "package": "vsce package"
+    "package": "vsce package",
+    "test": "node .vscode-test.mjs"
   },
   "devDependencies": {
-    "@types/node": "^18.18.0",
+    "@types/mocha": "^10.0.10",
+    "@types/node": "^20.19.22",
     "@types/vscode": "^1.74.0",
+    "@vscode/test-cli": "^0.0.4",
+    "@vscode/test-electron": "^2.5.2",
     "esbuild": "^0.27.4",
+    "mocha": "^11.7.5",
     "typescript": "^5.3.3",
-    "vsce": "^2.15.0"
+    "vsce": "^1.97.0"
   }
 }

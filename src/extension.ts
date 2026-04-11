@@ -1,7 +1,7 @@
 import * as vscode from 'vscode';
 import { SoundManager } from './SoundManager/SoundPlayer';
 import { DebugService } from './Services/DebugService';
-import { StatusBar } from './utils/StatusBar';
+import { StatusBar } from './StatusBar';
 import { CommandServices, ToggleSoundName, ToggleDebugName, TestSoundName } from './Services/CommandServices';
 import { ChangeConfigService } from './Services/ChangeConfigServices';
 import { MonitoringService } from './Services/MonitoringService';
