@@ -34,7 +34,7 @@ export class MonitoringService {
                     const exitCode = e.exitCode;
                     this.debugService.debug(`Terminal monitoring: shell execution ended. exitCode=${exitCode} in terminal ${e.terminal.name}`);
                     if (exitCode === undefined) {
-                        this.debugService.error(`Terminal monitoring: exitCode is undefined; nothing to do in terminal ${e.terminal.name}`);
+                        this.debugService.debug(`Terminal monitoring: exitCode is undefined for terminal ${e.terminal.name}; this is common with CMD and Git Bash`);
                         return;
                     }
                     if (exitCode !== 0) {

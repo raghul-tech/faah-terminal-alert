@@ -98,7 +98,7 @@ export class SoundManager {
     public async play(): Promise<boolean> {
         const now = Date.now();
         if (now - this.lastPlayedTime < this.cooldownMs) {
-            this.debugService.debug(`SoundManager: play() skipped due to cooldown (${now - this.lastPlayedTime}ms/${this.cooldownMs}ms)`);
+            this.debugService.debug(`SoundManager: skipped due to cooldown (${now - this.lastPlayedTime}ms/${this.cooldownMs}ms)`);
             return false;
         }
         this.lastPlayedTime = now;
@@ -136,12 +136,12 @@ export class SoundManager {
             
             const elapsed = Date.now() - startTime;
             if (elapsed > 2) {
-                this.debugService.debug(`SoundManager: play() completed in ${elapsed}ms`);
+                this.debugService.debug(`SoundManager: play completed in ${elapsed}ms`);
             }
             
             return true;
         } catch (error) {
-            this.debugService.error(`SoundManager: play() failed with error: ${error instanceof Error ? error.message : String(error)}`);
+            this.debugService.error(`SoundManager: play failed with error: ${error instanceof Error ? error.message : String(error)}`);
            return this.playFallback()
         }
     }
@@ -149,6 +149,7 @@ export class SoundManager {
     private async playFallback():Promise<boolean> {
         return this.soundFallback().then(() => {
             this.debugService.success('SoundManager: fallback sound played successfully');
+            this.debugService.warn('SoundManager: Sound Fallback may have delay to play');
             return true;
         }).catch((error) => {
             this.debugService.error(`SoundManager: fallback sound failed ${error instanceof Error ? error.message : String(error)}`);

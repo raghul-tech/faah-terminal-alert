@@ -2,9 +2,9 @@ name: Lint and Format
 
 on:
   push:
-    branches: [ main, master, develop, prod-v1 ]
+    branches: [main, master, develop, prod-v1]
   pull_request:
-    branches: [ main, master, develop, prod-v1 ]
+    branches: [main, master, develop, prod-v1]
 
 jobs:
   lint:
@@ -23,31 +23,86 @@ jobs:
     - name: Install dependencies
       run: npm ci
     
-    - name: Check TypeScript compilation
-      run: npx tsc --noEmit --project tsconfig.json || true
+    - name: TypeScript type check
+      run: npx tsc --noEmit --project tsconfig.json
     
-    - name: Check for common issues
+    - name: Check for console.log statements
       run: |
-        echo "Checking for common issues..."
-        
-        # Check for console.log statements
-        if grep -r "console.log" src/ --exclude-dir=node_modules; then
-          echo "Warning: console.log found in source code"
+        if grep -r "console\.log" src/ --include="*.ts" --include="*.js" --exclude-dir=node_modules 2>/dev/null; then
+          echo "❌ Error: console.log found in source code. Remove them before committing."
+          exit 1
+        else
+          echo "✅ No console.log statements found"
+        fi
+    
+    - name: Check for debugger statements
+      run: |
+        if grep -r "debugger" src/ --include="*.ts" --include="*.js" --exclude-dir=node_modules 2>/dev/null; then
+          echo "❌ Error: debugger statements found. Remove them before committing."
+          exit 1
+        else
+          echo "✅ No debugger statements found"
+        fi
+    
+    - name: Validate package.json
+      run: |
+        if node -e "JSON.parse(require('fs').readFileSync('package.json', 'utf8'))" 2>/dev/null; then
+          echo "✅ package.json is valid JSON"
+        else
+          echo "❌ Error: Invalid package.json"
           exit 1
         fi
-        
-        # Check package.json syntax
-        if ! node -e "JSON.parse(require('fs').readFileSync('package.json', 'utf8'))"; then
-          echo "Invalid package.json"
-          exit 1
-        fi
-        
-        # Check for required files
+    
+    - name: Check required files exist
+      run: |
+        missing_files=""
         for file in "README.md" "CHANGELOG.md" "LICENSE"; do
           if [ ! -f "$file" ]; then
-            echo "Missing required file: $file"
-            exit 1
+            missing_files="$missing_files $file"
           fi
         done
         
-        echo "All checks passed"
+        if [ -n "$missing_files" ]; then
+          echo "❌ Error: Missing required files:$missing_files"
+          exit 1
+        else
+          echo "✅ All required files present (README.md, CHANGELOG.md, LICENSE)"
+        fi
+    
+    - name: Check extension icon
+      run: |
+        if [ ! -f "media/icon.png" ]; then
+          echo "⚠️ Warning: No icon found at media/icon.png"
+        else
+          echo "✅ Extension icon found"
+        fi
+    
+    - name: Check package.json version matches latest tag (for main branch only)
+      if: github.ref == 'refs/heads/main'
+      run: |
+        PACKAGE_VERSION=$(node -p "require('./package.json').version")
+        LATEST_TAG=$(git describe --tags --abbrev=0 2>/dev/null || echo "none")
+        
+        if [ "$LATEST_TAG" != "none" ]; then
+          TAG_VERSION=${LATEST_TAG#v}
+          if [ "$PACKAGE_VERSION" != "$TAG_VERSION" ]; then
+            echo "⚠️ Warning: package.json version ($PACKAGE_VERSION) does not match latest tag ($TAG_VERSION)"
+          else
+            echo "✅ package.json version matches latest tag"
+          fi
+        fi
+    
+    - name: Notify on success
+      if: success()
+      run: |
+        echo "🎉 All linting checks passed!"
+        echo "✅ TypeScript compilation successful"
+        echo "✅ No debug statements found"
+        echo "✅ Required files present"
+    
+    - name: Notify on failure
+      if: failure()
+      run: |
+        echo "❌ Linting failed!"
+        echo "Please fix the issues above before committing."
+        exit 1

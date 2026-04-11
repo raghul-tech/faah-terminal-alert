@@ -3,6 +3,9 @@
 [![Version](https://img.shields.io/badge/version-1.0.0-blue.svg)](https://marketplace.visualstudio.com/items?itemName=raghul-tech.faah-terminal-alert)
 [![VS Code](https://img.shields.io/badge/vscode-^1.74.0-blue.svg)](https://code.visualstudio.com/)
 [![GitHub](https://img.shields.io/badge/github-repo-green.svg)](https://github.com/raghul-tech/faah-terminal-alert)
+[![CI](https://github.com/raghul-tech/faah-terminal-alert/workflows/CI/badge.svg)](https://github.com/raghul-tech/faah-terminal-alert/actions/workflows/ci.yml)
+[![Lint](https://github.com/raghul-tech/faah-terminal-alert/workflows/Lint%20and%20Format/badge.svg)](https://github.com/raghul-tech/faah-terminal-alert/actions/workflows/lint.yml)
+[![Release](https://github.com/raghul-tech/faah-terminal-alert/workflows/Release%20and%20Publish/badge.svg)](https://github.com/raghul-tech/faah-terminal-alert/actions/workflows/release.yml)
 
 **Plays FAAH sound when terminal commands fail (non-zero exit code). Never miss an error again!**
 
@@ -12,12 +15,14 @@
 
 FAAH Terminal Alert is a VS Code extension that plays a distinctive **"FAAH" sound** whenever a terminal command exits with a non-zero status code. Stop staring at your terminal—let your ears tell you when something goes wrong!
 
-### 🚀 Perfect for:
+### Perfect for:
 - **Long-running builds** - Work on other tasks while your code compiles
 - **Running tests** - Get audio feedback when tests fail
 - **Package installation** - Know immediately if npm/pip/yarn fails
-- **Docker operations** - Hear when container builds fail
-- **Git operations** - Audio alerts for merge conflicts or push failures
+- **Docker operations** - Hear when container builds fail *(PowerShell terminals)*
+- **Git operations** - Audio alerts for merge conflicts or push failures *(PowerShell terminals)*
+
+> **Note**: Only PowerShell provides reliable exit code detection. CMD and Git Bash have limited support. For best results, use PowerShell terminals.
 
 ---
 
@@ -133,6 +138,11 @@ Open VS Code Settings (`Ctrl+,`) and search for `faah-terminal-alert`.
 - Ensure your system volume is up
 - Try **Test Sound** from the status bar or command palette
 - Enable **Debug Mode** to see detailed logs
+
+### Git Bash Not Working?
+- **Git Bash may not report exit codes** to VS Code properly
+- **Solution**: Use PowerShell, CMD, or VS Code's integrated terminal
+- **Alternative**: Run git commands in PowerShell instead of Git Bash
 
 ### Remote/SSH Environments
 - Audio playback may not work over SSH due to lack of audio device.
