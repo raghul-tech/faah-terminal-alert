@@ -1,17 +1,56 @@
-.vscode/**
+# Test folders
 .vscode-test/**
-out/**
-node_modules/**
-.gitignore
-.yarnrc
-esbuild.js
-vsc-extension-quickstart.md
-**/tsconfig.json
-**/eslint.config.mjs
-**/*.map
-**/*.ts
+test/**
+**/*.test.js
+**/*.test.ts
 
-# Don't ignore media folder and sound files
-!media/**
-!**/*.wav
-!**/*.mp3
+# Build artifacts
+node_modules/**
+!node_modules/vscode/**
+dist/test/**
+
+# Source files (already compiled)
+src/**
+!src/extension.ts
+tsconfig.json
+.eslintrc*
+.eslintignore
+
+# Git and GitHub
+.git/**
+.github/**
+!.github/README.md
+.gitignore
+.gitattributes
+
+# CI/CD workflows
+.github/workflows/**
+!.github/workflows/release.yml
+
+# VS Code files
+.vscode/**
+!.vscode/launch.json
+!.vscode/tasks.json
+
+# Development files
+*.vsix
+.vscode-test.mjs
+esbuild.js
+mocha.*
+
+# Documentation (keep only essential)
+CHANGELOG.md
+README.md
+LICENSE.txt
+PRIVACY.md
+SUPPORT.md
+
+# Media (keep only your icon and sound)
+!media/icon.png
+!media/faah.wav
+media/**/*.psd
+media/**/*.xcf
+
+# Logs
+*.log
+npm-debug.log*
