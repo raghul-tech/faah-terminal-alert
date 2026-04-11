@@ -15,14 +15,14 @@
 
 FAAH Terminal Alert is a VS Code extension that plays a distinctive **"FAAH" sound** whenever a terminal command exits with a non-zero status code. Stop staring at your terminal—let your ears tell you when something goes wrong!
 
-### 🚀 Perfect for:
+### Perfect for:
 - **Long-running builds** - Work on other tasks while your code compiles
 - **Running tests** - Get audio feedback when tests fail
 - **Package installation** - Know immediately if npm/pip/yarn fails
-- **Docker operations** - Hear when container builds fail *(PowerShell/CMD terminals)*
-- **Git operations** - Audio alerts for merge conflicts or push failures *(PowerShell/CMD terminals)*
+- **Docker operations** - Hear when container builds fail *(PowerShell terminals)*
+- **Git operations** - Audio alerts for merge conflicts or push failures *(PowerShell terminals)*
 
-> **Note**: Git Bash may not always report exit codes properly to VS Code. For best results, use PowerShell, CMD, or integrated terminals.
+> **Note**: Only PowerShell provides reliable exit code detection. CMD and Git Bash have limited support. For best results, use PowerShell terminals.
 
 ---
 
