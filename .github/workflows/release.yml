@@ -54,7 +54,7 @@ jobs:
           echo "### Changes\n- Initial release" >> $GITHUB_OUTPUT
           echo "EOF" >> $GITHUB_OUTPUT
         fi
-        
+
     - name: Wait for network stability
       run: sleep 5
     
@@ -62,7 +62,7 @@ jobs:
       run: npx vsce package --no-dependencies --out faah-terminal-alert-${{ steps.version.outputs.VERSION }}.vsix
     
     - name: Create GitHub Release
-      uses: softprops/action-gh-release@v1
+      uses: softprops/action-gh-release@v2
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
