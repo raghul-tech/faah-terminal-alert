@@ -1,4 +1,4 @@
-name: Release
+name: Release and Publish
 
 on:
   push:
@@ -6,7 +6,7 @@ on:
       - 'v*'
 
 jobs:
-  release:
+  release-and-publish:
     runs-on: ubuntu-latest
     
     steps:
@@ -25,9 +25,6 @@ jobs:
     - name: Build extension
       run: npm run build
     
-    - name: Package extension
-      run: npm run package
-    
     - name: Get version
       id: version
       run: echo "VERSION=${GITHUB_REF#refs/tags/v}" >> $GITHUB_OUTPUT
@@ -38,48 +35,41 @@ jobs:
         VERSION="${{ steps.version.outputs.VERSION }}"
         echo "Extracting notes for version $VERSION"
         
-        # Extract changelog section for this version
         if [ -f "CHANGELOG.md" ]; then
-          # Look for version section in CHANGELOG
           sed -n "/## \[$VERSION\]/,/^##/p" CHANGELOG.md | sed '$d' > release_notes_temp.md
-          
-          # Read the content
           RELEASE_NOTES=$(cat release_notes_temp.md)
           
-          # If no content found, use default
           if [ -z "$RELEASE_NOTES" ]; then
-            RELEASE_NOTES="### Changes
-          - Bug fixes and improvements
-          - Performance enhancements"
+            RELEASE_NOTES="### Changes\n- Bug fixes and improvements\n- Performance enhancements"
           fi
           
           echo "RELEASE_NOTES<<EOF" >> $GITHUB_OUTPUT
           echo "$RELEASE_NOTES" >> $GITHUB_OUTPUT
           echo "EOF" >> $GITHUB_OUTPUT
         else
-          echo "No CHANGELOG.md found"
           echo "RELEASE_NOTES<<EOF" >> $GITHUB_OUTPUT
-          echo "### Changes
-          - Bug fixes and improvements" >> $GITHUB_OUTPUT
+          echo "### Changes\n- Initial release" >> $GITHUB_OUTPUT
           echo "EOF" >> $GITHUB_OUTPUT
         fi
     
-    - name: Create Release
-      uses: actions/create-release@v1
+    - name: Package extension
+      run: npx vsce package --no-dependencies --out faah-terminal-alert-${{ steps.version.outputs.VERSION }}.vsix
+    
+    - name: Create GitHub Release
+      uses: softprops/action-gh-release@v1
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
-        tag_name: ${{ github.ref }}
-        release_name: FAAH Terminal Alert v${{ steps.version.outputs.VERSION }}
+        tag_name: ${{ github.ref_name }}
+        name: FAAH Terminal Alert v${{ steps.version.outputs.VERSION }}
         body: |
-          ## :tada: FAAH Terminal Alert v${{ steps.version.outputs.VERSION }}
+          ## 🎉 FAAH Terminal Alert v${{ steps.version.outputs.VERSION }}
           
-          ### :package: Installation
+          ### 📦 Installation
           ```bash
           code --install-extension raghul-tech.faah-terminal-alert
           ```
-          
-          Or search for **"FAAH Terminal Alert"** in the VS Code Marketplace.
+          Or search for "FAAH Terminal Alert" in VS Code Marketplace.
           
           ---
           
@@ -87,29 +77,55 @@ jobs:
           
           ---
           
-          ### :link: Quick Links
+          ### 🔗 Quick Links
           - [VS Code Marketplace](https://marketplace.visualstudio.com/items?itemName=raghul-tech.faah-terminal-alert)
+          - [Open VSX Registry](https://open-vsx.org/extension/raghul-tech/faah-terminal-alert)
           - [Documentation](https://github.com/raghul-tech/faah-terminal-alert/blob/main/README.md)
           - [Report Issues](https://github.com/raghul-tech/faah-terminal-alert/issues)
           - [Full Changelog](https://github.com/raghul-tech/faah-terminal-alert/blob/main/CHANGELOG.md)
           
-          ### :star: Support
+          ### ⭐ Support
           If you find this extension helpful, please:
           - :star: Star it on GitHub
-          - :thumbsup: Rate it on the Marketplace
+          - :thumbsup: Rate it on Marketplace
           - :bug: Report any issues you find
           
           ---
           _Made with :heart: for developers who hate staring at terminals!_
         draft: false
         prerelease: false
+        files: |
+          faah-terminal-alert-${{ steps.version.outputs.VERSION }}.vsix
     
-    - name: Upload Release Asset
-      uses: actions/upload-release-asset@v1
+    - name: Publish to VS Code Marketplace
       env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      with:
-        upload_url: ${{ steps.create_release.outputs.upload_url }}
-        asset_path: ./faah-terminal-alert-${{ steps.version.outputs.VERSION }}.vsix
-        asset_name: faah-terminal-alert-${{ steps.version.outputs.VERSION }}.vsix
-        asset_content_type: application/octet-stream
+        VSCE_PAT: ${{ secrets.VSCE_PAT }}
+      if: env.VSCE_PAT != ''
+      run: |
+        echo "Publishing to VS Code Marketplace..."
+        npx vsce publish --pat $VSCE_PAT
+        echo "Published to VS Code Marketplace!"
+    
+    - name: Publish to Open VSX Registry (for Cursor/Windsurf)
+      env:
+        OPENVSX_PAT: ${{ secrets.OPENVSX_PAT }}
+      if: env.OPENVSX_PAT != ''
+      run: |
+        echo "Publishing to Open VSX Registry..."
+        npm install -g ovsx
+        ovsx publish -p $OPENVSX_PAT
+        echo "Published to Open VSX Registry!"
+    
+    - name: Notify on success
+      if: success()
+      run: |
+        echo "Extension released and published successfully!"
+        echo "Version: ${{ steps.version.outputs.VERSION }}"
+        echo ""
+        echo "Available in:"
+        echo "- VS Code Marketplace: https://marketplace.visualstudio.com/items?itemName=raghul-tech.faah-terminal-alert"
+        echo "- Open VSX Registry: https://open-vsx.org/extension/raghul-tech/faah-terminal-alert"
+        echo ""
+        echo "Installation commands:"
+        echo "- VS Code: code --install-extension raghul-tech.faah-terminal-alert"
+        echo "- Cursor/Windsurf: Available via Open VSX Registry"
