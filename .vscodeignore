@@ -1,15 +1,17 @@
 # Test folders
 .vscode-test/**
+test/**
 **/*.test.js
 **/*.test.ts
 
 # Build artifacts
 node_modules/**
-dist/test/**
+dist/**
+!dist/extension.js
+!dist/extension.js.map
 
 # Source files (already compiled)
 src/**
-!src/extension.ts
 tsconfig.json
 .eslintrc*
 .eslintignore
@@ -33,6 +35,14 @@ tsconfig.json
 .vscode-test.mjs
 esbuild.js
 mocha.*
+
+# Old compiled files (these are causing "suspicious content")
+errorDetector.js
+errorDetector.js.map
+errorPattern.js
+errorPattern.js.map
+SoundManager.js
+SoundManager.js.map
 
 # Logs
 *.log
