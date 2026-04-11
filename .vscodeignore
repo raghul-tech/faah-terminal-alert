@@ -1,12 +1,10 @@
 # Test folders
 .vscode-test/**
-test/**
 **/*.test.js
 **/*.test.ts
 
 # Build artifacts
 node_modules/**
-!node_modules/vscode/**
 dist/test/**
 
 # Source files (already compiled)
@@ -18,14 +16,11 @@ tsconfig.json
 
 # Git and GitHub
 .git/**
-.github/**
-!.github/README.md
 .gitignore
 .gitattributes
 
 # CI/CD workflows
 .github/workflows/**
-!.github/workflows/release.yml
 
 # VS Code files
 .vscode/**
@@ -34,22 +29,10 @@ tsconfig.json
 
 # Development files
 *.vsix
+.vsc-extension-quickstart.md
 .vscode-test.mjs
 esbuild.js
 mocha.*
-
-# Documentation (keep only essential)
-CHANGELOG.md
-README.md
-LICENSE.txt
-PRIVACY.md
-SUPPORT.md
-
-# Media (keep only your icon and sound)
-!media/icon.png
-!media/faah.wav
-media/**/*.psd
-media/**/*.xcf
 
 # Logs
 *.log
