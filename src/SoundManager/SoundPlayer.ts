@@ -55,7 +55,7 @@ export class SoundManager {
         const previousLastPlayedTime = this.lastPlayedTime;
         this.lastPlayedTime = 0;
         try {
-            this.debugService.debug('SoundManager: playing test sound');
+            this.debugService.message('SoundManager: playing test sound');
             return await this.play();
         } finally {
             this.lastPlayedTime = previousLastPlayedTime;

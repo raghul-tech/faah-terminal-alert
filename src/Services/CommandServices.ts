@@ -37,7 +37,6 @@ export class CommandServices{
                 vscode.commands.registerCommand(ToggleDebugName, async () => {
                     const config = vscode.workspace.getConfiguration('faah-terminal-alert');
                     const newState = !this.debugService.isDebugEnabled();
-                    this.debugService.setDebugEnabled(newState);
                     await config.update('debugEnabled', newState, vscode.ConfigurationTarget.Global);
                     this.statusBar.updateDebugStatusBar(debugStatusBarItem, newState);
                     this.debugService.message(`Debug mode ${newState ? 'enabled' : 'disabled'}`);
