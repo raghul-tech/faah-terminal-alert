@@ -30,7 +30,7 @@ export class SoundManager {
         if (this.platform === "win32") {
             this.soundBase64 = this.audioLoader.loadSoundIntoMemory();
             if (this.soundBase64) {
-                this.debugService.debug(`SoundManager: Windows mode ready (sound loaded into memory; base64Length=${this.soundBase64.length})`);
+                this.debugService.debug(`SoundManager: Windows mode ready (sound loaded into memory base64Length=${this.soundBase64.length})`);
             } else {
                 this.debugService.warn('SoundManager: Windows mode selected but sound could not be loaded; will rely on fallback');
             }
@@ -48,13 +48,14 @@ export class SoundManager {
     public setCooldownMs(cooldownMs: number): void {
         if (!Number.isFinite(cooldownMs) || cooldownMs < 0) return;
         this.cooldownMs = cooldownMs;
+        this.debugService.debug(`SoundManager: cooldownMs updated to ${cooldownMs}`);
     }
 
     public async testSound(): Promise<boolean> {
         const previousLastPlayedTime = this.lastPlayedTime;
         this.lastPlayedTime = 0;
         try {
-            this.debugService.debug('SoundManager: testSound() invoked (bypassing cooldown)');
+            this.debugService.debug('SoundManager: playing test sound');
             return await this.play();
         } finally {
             this.lastPlayedTime = previousLastPlayedTime;

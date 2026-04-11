@@ -15,6 +15,7 @@ export class DebugService {
 
     public setDebugEnabled(enabled: boolean): void {
         this.debugEnabled = enabled;
+        this.debug(`Debug enabled updated to ${enabled}`);
     }
 
     public isDebugEnabled(): boolean {
