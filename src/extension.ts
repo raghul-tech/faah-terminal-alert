@@ -49,12 +49,11 @@ export function activate(context: vscode.ExtensionContext) {
     commandService.commandDebugToggle(debugStatusBarItem);
     commandService.commandTestSound(soundEnabled, soundManager);
 
-    monitoringService = new MonitoringService(context,debugService);
-    monitoringService.setupTerminalMonitoring(soundEnabled,soundManager);
+    monitoringService = new MonitoringService(context,debugService,soundEnabled);
+    monitoringService.setupTerminalMonitoring(soundManager);
 
-    changeConfigService = new ChangeConfigService(context,debugService,statusBar,soundEnabled);
+    changeConfigService = new ChangeConfigService(context,debugService,statusBar,monitoringService);
     changeConfigService.commandChangeConfiguration(soundStatusBarItem,debugStatusBarItem,soundManager);
-    soundEnabled = changeConfigService.getSoundEnabled();
  
     context.subscriptions.push(soundStatusBarItem);
     context.subscriptions.push(debugStatusBarItem);

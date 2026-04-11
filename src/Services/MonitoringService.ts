@@ -1,25 +1,33 @@
 import * as vscode from 'vscode';
 import { DebugService } from './DebugService';
 import { SoundManager } from '../SoundManager/SoundPlayer';
+
 export class MonitoringService {
 
     private debugService: DebugService;
     private context: vscode.ExtensionContext
+    private soundEnabled: boolean;
 
     
-    constructor(context: vscode.ExtensionContext,debugService: DebugService, ) {
+    constructor(context: vscode.ExtensionContext,debugService: DebugService, soundEnabled: boolean) {
         this.debugService = debugService;
-        this.context = context
+        this.context = context;
+        this.soundEnabled = soundEnabled;
+    }
+
+    public setSoundEnabled(enabled: boolean): void {
+        this.soundEnabled = enabled;
+        this.debugService.debug(`Terminal monitoring: soundEnabled updated to ${enabled}`);
     }
 
     
-    public setupTerminalMonitoring(soundEnabled: boolean,soundManager: SoundManager): void {
+    public setupTerminalMonitoring(soundManager: SoundManager): void {
         if (vscode.window.onDidEndTerminalShellExecution) {
             this.debugService.debug('Terminal monitoring: onDidEndTerminalShellExecution listener registered');
     
             this.context.subscriptions.push(
                 vscode.window.onDidEndTerminalShellExecution(async (e) => {
-                    if (!soundEnabled) {
+                    if (!this.soundEnabled) {
                         this.debugService.debug(`Terminal monitoring: sound is disabled. ignoring terminal exit event in terminal ${e.terminal.name}`);
                         return;
                     }
