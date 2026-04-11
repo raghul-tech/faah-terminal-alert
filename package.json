@@ -1,13 +1,62 @@
 {
-  "name": "faah-terminal-sound",
-  "displayName": "FAAH Terminal Sound",
-  "description": "Plays FAAH sound when terminal errors occur",
+  "name": "faah-terminal-alert",
+  "displayName": "FAAH Terminal Alert",
+  "description": "Never miss terminal errors again! Plays instant FAAH sound when commands fail. Perfect for long builds, tests, and CI/CD workflows.",
   "version": "1.0.0",
   "publisher": "raghul-tech",
   "repository": {
     "type": "git",
-    "url": "https://github.com/raghul-tech/faah-terminal-sound"
+    "url": "https://github.com/raghul-tech/faah-terminal-alert"
   },
+  "icon": "media/icon.png",
+  "keywords": [
+    "terminal",
+    "error",
+    "sound",
+    "audio",
+    "alert",
+    "notification",
+    "faah",
+    "beep",
+    "build",
+    "compile",
+    "test",
+    "npm",
+    "yarn",
+    "pip",
+    "docker",
+    "git",
+    "ci",
+    "cd",
+    "command",
+    "shell",
+    "powershell",
+    "bash",
+    "zsh",
+    "monitor",
+    "watcher",
+    "productivity",
+    "developer",
+    "tool",
+    "extension",
+    "vscode",
+    "fail",
+    "failure",
+    "exit code",
+    "status",
+    "warning",
+    "debug",
+    "logging",
+    "cooldown",
+    "spam",
+    "anti-spam",
+    "instant",
+    "immediate",
+    "feedback",
+    " audible",
+    "noise",
+    "alerting"
+  ],
   "engines": {
     "vscode": "^1.74.0"
   },
@@ -21,122 +70,75 @@
   "contributes": {
     "commands": [
       {
-        "command": "faah-terminal.toggle",
-        "title": "FAAH: Toggle Sound",
-        "category": "FAAH"
+        "command": "faah-terminal-alert.toggle",
+        "title": "Toggle Sound",
+        "category": "FAAH Terminal Alert"
       },
       {
-        "command": "faah-terminal.testSound",
-        "title": "FAAH: Test Sound",
-        "category": "FAAH"
+        "command": "faah-terminal-alert.debug",
+        "title": "Toggle Debug Logging",
+        "category": "FAAH Terminal Alert"
+      },
+      {
+        "command": "faah-terminal-alert.testSound",
+        "title": "Test Sound",
+        "category": "FAAH Terminal Alert"
       }
     ],
     "configuration": {
-      "title": "FAAH Terminal",
+      "title": "FAAH Terminal Alert",
       "properties": {
-        "faah-terminal.enabled": {
+        "faah-terminal-alert.enabled": {
           "type": "boolean",
           "default": true,
           "description": "Enable/disable FAAH sound"
         },
-        "faah-terminal.cooldown": {
+        "faah-terminal-alert.debugEnabled": {
+          "type": "boolean",
+          "default": false,
+          "description": "Enable/disable debug logging"
+        },
+        "faah-terminal-alert.cooldown": {
           "type": "number",
           "default": 1000,
-          "minimum": 100,
-          "maximum": 10000,
-          "description": "Cooldown between sounds in milliseconds"
-        },
-        "faah-terminal.monitorTerminal": {
-          "type": "boolean",
-          "default": true,
-          "description": "Monitor terminal for errors"
-        },
-        "faah-terminal.errorPatterns": {
-          "type": "array",
-          "default": [
-            "error",
-            "failed",
-            "fail",
-            "fatal",
-            "exception",
-            "not found",
-            "command not found",
-            "permission denied",
-            "syntax error",
-            "undefined",
-            "cannot",
-            "unable to",
-            "could not",
-            "npm ERR!",
-            "traceback",
-            "Exception:",
-            "SyntaxError",
-            "TypeError",
-            "ReferenceError"
-          ],
-          "description": "Patterns to detect errors in terminal output"
-        },
-        "faah-terminal.quietHours": {
-          "type": "object",
-          "default": {
-            "enabled": false,
-            "start": "22:00",
-            "end": "08:00"
-          },
-          "description": "Quiet hours when sound is muted"
+          "minimum": 0,
+          "description": "Minimum time in milliseconds between sounds (prevents spamming)"
         }
       }
     },
     "keybindings": [
       {
-        "command": "faah-terminal.toggle",
+        "command": "faah-terminal-alert.toggle",
         "key": "ctrl+alt+f",
-        "mac": "cmd+alt+f",
-        "when": "editorTextFocus"
+        "mac": "cmd+alt+f"
+      },
+      {
+        "command": "faah-terminal-alert.debug",
+        "key": "ctrl+alt+d",
+        "mac": "cmd+alt+d"
+      },
+      {
+        "command": "faah-terminal-alert.testSound",
+        "key": "ctrl+alt+t",
+        "mac": "cmd+alt+t"
       }
     ]
   },
-  "enabledApiProposals": [
-    "terminalDataWriteEvent"
-  ],
   "scripts": {
-    "vscode:prepublish": "npm run package",
-    "compile": "npm run check-types && npm run lint && node esbuild.js",
-    "watch": "npm-run-all -p watch:*",
-    "watch:esbuild": "node esbuild.js --watch",
-    "watch:tsc": "tsc --noEmit --watch --project tsconfig.json",
-    "package": "npm run check-types && npm run lint && node esbuild.js --production",
-    "check-types": "tsc --noEmit",
-    "lint": "eslint src",
-    "build": "npm run package",
-    "dev": "npm run watch",
-    "clean": "rm -rf dist out node_modules"
+    "build": "node esbuild.js --production",
+    "watch": "node esbuild.js --watch",
+    "package": "vsce package",
+    "test": "node .vscode-test.mjs --verbose"
   },
   "devDependencies": {
     "@types/mocha": "^10.0.10",
-    "@types/node": "^18.18.0",
-    "@types/play-sound": "^1.1.2",
+    "@types/node": "^20.19.22",
     "@types/vscode": "^1.74.0",
-    "@typescript-eslint/eslint-plugin": "^8.57.0",
-    "@typescript-eslint/parser": "^8.57.0",
+    "@vscode/test-cli": "^0.0.4",
+    "@vscode/test-electron": "^2.5.2",
     "esbuild": "^0.27.4",
-    "eslint": "^10.0.3",
-    "npm-run-all": "^4.1.5",
+    "mocha": "^11.7.5",
     "typescript": "^5.3.3",
-    "typescript-eslint": "^8.57.0"
-  },
-  "icon": "media/icon.png",
-  "keywords": [
-    "terminal",
-    "error",
-    "sound",
-    "audio",
-    "alert",
-    "notification",
-    "faah",
-    "beep"
-  ],
-  "dependencies": {
-    "play-sound": "^1.1.6"
+    "vsce": "^1.97.0"
   }
 }
