@@ -5,14 +5,14 @@ All notable changes to the "FAAH Terminal Alert" extension will be documented in
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [1.0.0] - 2025-04-09
+## [1.0.0] - 2026-04-12
 
 ### Added
 - **Terminal error detection** - Plays FAAH sound when terminal commands exit with non-zero status codes
 - **Toggle sound on/off** - Status bar icon and command to enable/disable sound
 - **Debug mode** - Detailed logging for troubleshooting with timestamped messages
 - **Configurable cooldown** - Prevents sound spamming (default 1000ms, user-configurable)
-- **Test sound command** - Play the FAAH sound on demand for verification
+- **Test sound command** - Play the FAAH sound for verification
 - **Keyboard shortcuts** - Quick access to toggle sound, debug mode, and test sound
 - **Status bar indicators** - Visual feedback for sound state, debug state, and test sound
 - **Persistent settings** - Sound enabled, debug enabled, and cooldown settings saved to VS Code settings
@@ -32,7 +32,3 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - SEO-friendly structure for GitHub and VS Code Marketplace
 
 ---
-
-## [Unreleased]
-
-- *No changes yet*
