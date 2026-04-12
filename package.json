@@ -1,7 +1,7 @@
 {
   "name": "faah-terminal-alert",
   "displayName": "FAAH Terminal Alert",
-  "description": "Never miss terminal errors again! Plays instant FAAH sound when commands fail. Perfect for long builds, tests, and CI/CD workflows.",
+  "description": "A simple VS Code extension that plays a notification sound when terminal commands fail. Designed to help developers notice errors during long-running tasks.",
   "version": "1.0.0",
   "publisher": "raghul-tech",
   "repository": {
@@ -15,17 +15,18 @@
   "license": "MIT",
   "icon": "media/icon.png",
   "keywords": [
+    "vscode",
     "terminal",
-    "error",
-    "sound",
-    "alert",
     "notification",
-    "faah",
-    "beep",
-    "build",
-    "ci",
-    "productivity"
+    "error alert",
+    "sound notification",
+    "developer tools"
   ],
+  "capabilities": {
+    "untrustedWorkspaces": {
+      "supported": false
+    }
+  },
   "engines": {
     "vscode": "^1.74.0"
   },
@@ -33,7 +34,9 @@
     "Other"
   ],
   "activationEvents": [
-    "onStartupFinished"
+    "*",
+    "onCommand:faah-terminal-alert.toggle",
+    "onCommand:faah-terminal-alert.testSound"
   ],
   "main": "./dist/extension.js",
   "contributes": {
