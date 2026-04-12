@@ -1,49 +1,18 @@
-# Test folders
-.vscode-test/**
-test/**
-**/*.test.js
-**/*.test.ts
-
-# Build artifacts
-node_modules/**
-dist/**
-!dist/extension.js
-!dist/extension.js.map
-
-# Source files (already compiled)
+# VS Code extensions should not include these files
+.vscode/**
+.github/**
 src/**
-tsconfig.json
+*.ts
+*.map
 .eslintrc*
 .eslintignore
-
-# Git and GitHub
-.git/**
+tsconfig.json
 .gitignore
-.gitattributes
-
-# CI/CD workflows
-.github/workflows/**
-
-# VS Code files
-.vscode/**
-!.vscode/launch.json
-!.vscode/tasks.json
-
-# Development files
+node_modules/**
 *.vsix
 .vsc-extension-quickstart.md
 .vscode-test.mjs
 esbuild.js
 mocha.*
-
-# Old compiled files (these are causing "suspicious content")
-errorDetector.js
-errorDetector.js.map
-errorPattern.js
-errorPattern.js.map
-SoundManager.js
-SoundManager.js.map
-
-# Logs
 *.log
 npm-debug.log*

@@ -8,6 +8,11 @@
     "type": "git",
     "url": "https://github.com/raghul-tech/faah-terminal-alert"
   },
+  "homepage": "https://github.com/raghul-tech/faah-terminal-alert/blob/main/README.md",
+  "bugs": {
+    "url": "https://github.com/raghul-tech/faah-terminal-alert/issues"
+  },
+  "license": "MIT",
   "icon": "media/icon.png",
   "keywords": [
     "terminal",
