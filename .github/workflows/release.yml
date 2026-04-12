@@ -109,7 +109,7 @@ jobs:
       if: env.VSCE_PAT != ''
       run: |
         echo "Publishing to VS Code Marketplace..."
-        npx @vscode/vsce publish --no-dependencies --pat $VSCE_PAT
+        npx vsce publish --no-dependencies --pat $VSCE_PAT
         echo "Published to VS Code Marketplace!"
     
     - name: Publish to Open VSX Registry (for Cursor/Windsurf)
