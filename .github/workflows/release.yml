@@ -58,11 +58,9 @@ jobs:
           VERSION="${{ steps.version.outputs.VERSION }}"
           if [ -f "CHANGELOG.md" ]; then
             NOTES=$(sed -n "/## \[$VERSION\]/,/^## \[/p" CHANGELOG.md | sed '$d' | tail -n +2)
-            if [ -z "$NOTES" ]; then
-              NOTES="- Bug fixes and improvements"
-            fi
-          else
-            NOTES="- Initial release"
+          fi
+          if [ -z "$NOTES" ]; then
+            NOTES="- Bug fixes and improvements"
           fi
           echo "NOTES<<EOF" >> $GITHUB_OUTPUT
           echo "$NOTES" >> $GITHUB_OUTPUT
@@ -89,16 +87,13 @@ jobs:
 
             ---
 
-            ### Install
-            Search **FAAH Terminal Alert** in the VS Code Extensions panel, or:
+            **Install:**
             ```bash
             code --install-extension raghul-tech.faah-terminal-alert
             ```
+            Or search **FAAH Terminal Alert** in the VS Code Extensions panel.
 
-            ### Links
-            - [VS Code Marketplace](https://marketplace.visualstudio.com/items?itemName=raghul-tech.faah-terminal-alert)
-            - [Changelog](https://github.com/raghul-tech/faah-terminal-alert/blob/main/CHANGELOG.md)
-            - [Report an Issue](https://github.com/raghul-tech/faah-terminal-alert/issues)
+            **Links:** [Marketplace](https://marketplace.visualstudio.com/items?itemName=raghul-tech.faah-terminal-alert) · [Changelog](https://github.com/raghul-tech/faah-terminal-alert/blob/main/CHANGELOG.md) · [Issues](https://github.com/raghul-tech/faah-terminal-alert/issues)
           draft: false
           prerelease: false
           files: "*.vsix"
@@ -110,7 +105,7 @@ jobs:
         run: |
           echo "Publishing v${{ steps.version.outputs.VERSION }} to VS Code Marketplace..."
           npx @vscode/vsce publish --no-dependencies
-          echo "Done."
+          echo "Published to VS Code Marketplace"
 
       - name: Publish to Open VSX Registry
         if: steps.tag_check.outputs.EXISTS == 'false' && env.OPENVSX_PAT != ''
@@ -119,10 +114,10 @@ jobs:
         run: |
           echo "Publishing to Open VSX Registry..."
           npx ovsx publish --no-dependencies -p $OPENVSX_PAT
-          echo "Done."
+          echo "Published to Open VSX Registry"
 
       - name: Summary
         if: steps.tag_check.outputs.EXISTS == 'false'
         run: |
-          echo "✅ Released FAAH Terminal Alert v${{ steps.version.outputs.VERSION }}"
+          echo "Released FAAH Terminal Alert v${{ steps.version.outputs.VERSION }}"
           echo "Marketplace: https://marketplace.visualstudio.com/items?itemName=raghul-tech.faah-terminal-alert"
