@@ -1,7 +1,6 @@
 import * as vscode from 'vscode';
 
 export class DebugService {
-    private static instance: DebugService;
     private outputChannel: vscode.OutputChannel | null = null;
     private debugEnabled: boolean = false;
     

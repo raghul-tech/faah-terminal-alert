@@ -1,237 +1,178 @@
-# 🔔 FAAH Terminal Alert
+# 🔔 Terminal Failure Alert
+
+> **Plays a sound when your terminal commands fail — so you can stop staring at the screen.**
 
 [![Version](https://img.shields.io/badge/version-1.0.0-blue.svg)](https://marketplace.visualstudio.com/items?itemName=raghul-tech.faah-terminal-alert)
 [![VS Code](https://img.shields.io/badge/vscode-^1.74.0-blue.svg)](https://code.visualstudio.com/)
 [![GitHub](https://img.shields.io/badge/github-repo-green.svg)](https://github.com/raghul-tech/faah-terminal-alert)
+[![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
 [![CI](https://github.com/raghul-tech/faah-terminal-alert/workflows/CI/badge.svg)](https://github.com/raghul-tech/faah-terminal-alert/actions/workflows/ci.yml)
 [![Lint](https://github.com/raghul-tech/faah-terminal-alert/workflows/Lint%20and%20Format/badge.svg)](https://github.com/raghul-tech/faah-terminal-alert/actions/workflows/lint.yml)
 [![Release](https://github.com/raghul-tech/faah-terminal-alert/workflows/Release%20and%20Publish/badge.svg)](https://github.com/raghul-tech/faah-terminal-alert/actions/workflows/release.yml)
 
-**Plays FAAH sound when terminal commands fail (non-zero exit code).**
-
 ---
 
-## 🎯 What is FAAH Terminal Alert?
+## What It Does
 
-FAAH Terminal Alert is a VS Code extension that plays a distinctive **"FAAH" sound** when a terminal command exits with a non-zero status code.
+**FAAH Terminal Alert** monitors your VS Code integrated terminal and plays an audio notification whenever a command exits with a non-zero status code (i.e., it failed).
 
-### Perfect for:
-- Long-running builds
-- Running tests
-- Package installation
-- Docker operations
+No more switching back to VS Code to check if your long build finished — or worse, if it crashed silently.
+
+### Built for:
+- Long-running builds and compilations
+- Test suites (`npm test`, `pytest`, `cargo test`)
+- Package installs
+- Docker builds and deployments
 - Git operations
 
-> **Note**: For best results, use PowerShell terminals. CMD and Git Bash have limited exit code detection support.
-
 ---
 
-## ✨ Features
+## Features
 
 | Feature | Description |
 |---------|-------------|
-| **Terminal Error Detection** | Detects non-zero exit codes from terminal commands |
-| **Toggle Sound** | Enable or disable sound with one click |
-| **Debug Mode** | Optional logging for troubleshooting |
-| **Cooldown** | Configurable delay between sounds (default 1000ms) |
-| **Keyboard Shortcuts** | Quick access to all features |
-| **Status Bar Icons** | Visual indicators for current state |
-| **Test Sound** | Play FAAH sound on demand |
+| **Failure Detection** | Detects non-zero exit codes from terminal commands |
+| **Audio Alert** | Plays a sound notification immediately on failure |
+| **Toggle On/Off** | Enable or disable with one click or keyboard shortcut |
+| **Test Sound** | Play the alert on demand to confirm it's working |
+| **Debug Mode** | Optional logging to the Output panel for troubleshooting |
+| **Cooldown Control** | Configurable minimum delay between alerts (default 1000ms) |
+| **Status Bar Icons** | Visual indicators showing current extension state |
 
 ---
 
-## 📥 Installation
+## Installation
 
-### From VS Code Marketplace
+**From the VS Code Marketplace:**
+
 1. Open VS Code
-2. Go to Extensions (`Ctrl+Shift+X`)
+2. Open Extensions (`Ctrl+Shift+X` / `Cmd+Shift+X`)
 3. Search for `FAAH Terminal Alert`
 4. Click **Install**
 
-### Manual Installation
+**From a `.vsix` file:**
 ```bash
-git clone https://github.com/raghul-tech/faah-terminal-alert.git
-cd faah-terminal-alert
-npm install
-npm run build
-cp -r . ~/.vscode/extensions/faah-terminal-alert/
+code --install-extension raghul-tech.faah-terminal-alert-1.0.0.vsix
 ```
 
-## 🎮 How to Use
+---
 
-After Installation
-The extension activates automatically. A 🔔 FAAH icon appears in the bottom-right status bar.
+## How to Use
 
-Run Terminal Commands
-Open a terminal (`Ctrl+``) and run any command. If it fails, FAAH sound plays.
+### Automatic Detection
+The extension activates automatically when VS Code starts. A 🔔 icon appears in the status bar (bottom right). Run any terminal command — if it fails, you'll hear the alert.
 
-Toggle Sound On/Off
-Click the bell icon in the status bar
+### Toggle Sound On/Off
+- Click the **🔔 bell icon** in the status bar
+- Or open the Command Palette (`Ctrl+Shift+P`) → `FAAH Terminal Alert: Toggle Sound`
+- Or use `Ctrl+Alt+F` (`Cmd+Alt+F` on macOS)
 
-Or use the command palette (Ctrl+Shift+P) → FAAH: Toggle Sound
+### Test the Alert
+- Click the **🧪 icon** in the status bar
+- Or Command Palette → `FAAH Terminal Alert: Test Sound`
+- Or use `Ctrl+Alt+T` (`Cmd+Alt+T` on macOS)
 
-Test Sound
-Click the test icon in the status bar
+### Debug Mode
+- Command Palette → `FAAH Terminal Alert: Toggle Debug Logging`
+- View logs: **Output panel** (`Ctrl+Shift+U`) → select `FAAH Terminal Alert`
 
-Or use the command palette → FAAH: Test Sound
+---
 
-Debug Mode
-Enable via command palette → FAAH: Toggle Debug
+## Settings
 
-View logs in Output → FAAH Terminal Alert
-
-## ⚙️ Settings
-
-Open VS Code Settings (`Ctrl+,`) and search for `faah-terminal-alert`.
+Search for `faah-terminal-alert` in VS Code Settings (`Ctrl+,`).
 
 | Setting | Type | Default | Description |
 |---------|------|---------|-------------|
-| `enabled` | boolean | `true` | Enable or disable sound alert |
-| `debugEnabled` | boolean | `false` | Enable debug logging |
-| `cooldown` | number | `1000` | Minimum milliseconds between sounds (anti-spam) |
-
-## ⌨️ Keyboard Shortcuts
-
-| Shortcut | Command | Description |
-|----------|---------|-------------|
-| `Ctrl+Alt+F` | `faahTerminalAlert.toggleSound` | Toggle sound on/off |
-| `Ctrl+Alt+D` | `faahTerminalAlert.toggleDebug` | Toggle debug mode |
-| `Ctrl+Alt+T` | `faahTerminalAlert.testSound` | Play test sound |
-
-*Tip: You can customize these shortcuts in VS Code Settings → Keyboard Shortcuts.*
-
-## 🎨 Status Bar Icons
-
-| Icon | Name | Action |
-|------|------|--------|
-| 🔔 | Sound Toggle | Click to toggle sound on/off |
-| 🐞 | Debug Toggle | Click to toggle debug mode |
-| 🧪 | Test Sound | Click to play FAAH sound |
+| `faah-terminal-alert.enabled` | boolean | `true` | Enable or disable sound alerts |
+| `faah-terminal-alert.debugEnabled` | boolean | `false` | Enable verbose debug logging |
+| `faah-terminal-alert.cooldown` | number | `1000` | Minimum milliseconds between alerts (prevents repeated sounds) |
 
 ---
 
-## 🔧 How It Works
+## Keyboard Shortcuts
 
-The extension uses VS Code's official terminal APIs to detect when commands complete.
+| Shortcut | Mac | Action |
+|----------|-----|--------|
+| `Ctrl+Alt+F` | `Cmd+Alt+F` | Toggle sound on/off |
+| `Ctrl+Alt+D` | `Cmd+Alt+D` | Toggle debug logging |
+| `Ctrl+Alt+T` | `Cmd+Alt+T` | Play test sound |
 
-If a command exits with a non-zero code, a notification sound is played to alert the user.
-
-The extension remains idle otherwise and only reacts to terminal events. All functionality runs locally within VS Code.
-
----
-
-## 🐛 Troubleshooting
-
-### No Sound?
-Check that sound is enabled (status bar bell icon)
-
-Ensure your system volume is up
-
-Try Test Sound from the status bar
-
-Enable Debug Mode to see logs
-
-### Git Bash Not Working?
-Git Bash may not report exit codes to VS Code properly
-
-Solution: Use PowerShell or CMD terminals instead
-
-### Remote/SSH Environments
-Audio may not work over SSH due to no audio device
-
-Enable Debug Mode to see details
-
-### Cooldown Not Respected?
-Ensure `cooldown` setting is a number (milliseconds)
-
-Restart VS Code after changing settings
-
-### Where to See Logs?
-Open Output Panel (Ctrl+Shift+U → Select FAAH Terminal Alert)
-
-Enable Debug Mode for verbose logs
+> You can customize these in **File → Preferences → Keyboard Shortcuts**.
 
 ---
 
-## 🔒 Security
+## Status Bar Icons
 
-This extension uses **system audio commands** to play sound:
-
-| Platform | Command Used |
-|----------|--------------|
-| Windows | `powershell -c "[Console]::Beep(...)"` |
-| macOS | `afplay` |
-| Linux | `aplay` or `paplay` |
-
-### What This Means
-
-- ✅ Commands are **read-only** (audio output only)
-- ✅ Commands are **pre-defined** (no user input is ever executed)
-- ✅ All commands are **standard system utilities**
-- 🚫 No files are read or modified
-- 🚫 No data is sent over the network
-
-### User Control
-
-- **When enabled**: Extension listens to terminal events and plays sound on failure using system audio commands
-- **When disabled**: **No commands are executed** - extension remains completely inactive
-- **Full control**: Users can enable/disable at any time via settings
-
-> The system commands are necessary for cross-platform audio playback and are fully documented.
-
-### **User Control**
-
-- **When enabled**: Listens to terminal events and plays sound on failure
-- **When disabled**: **No commands are executed** - extension remains completely inactive
-- **Full control**: Users can enable/disable at any time via settings
-
-> **Note**: When the extension is turned off, it does not execute any system commands or background processes.
+| Icon | Description | Click Action |
+|------|-------------|--------------|
+| 🔔 | Sound is enabled | Toggle off |
+| 🔕 | Sound is disabled | Toggle on |
+| 🐞 | Debug mode indicator | Toggle debug |
+| 🧪 | Test sound button | Play alert |
 
 ---
 
-## 🛠️ Development
+## How It Works
 
-### Prerequisites
-- VS Code Extension Development Host
-- Node.js
+The extension uses VS Code's official terminal event APIs to listen for command completion events. When a command exits with a non-zero code, it triggers an audio notification using the operating system's built-in audio capabilities.
 
-### Setup
-```bash
-git clone https://github.com/raghul-tech/faah-terminal-alert.git
-cd faah-terminal-alert
-npm install
-```
+- All processing happens **locally within VS Code**
+- **No data is collected, stored, or transmitted**
+- The extension is **completely idle when disabled** — no background activity of any kind
+- Audio playback uses standard OS-level audio — no third-party audio servers required
 
-### Build & Run
-```bash
-npm run build
-npm run watch
-```
+> **Note:** For reliable exit code detection, **PowerShell** terminals work best. Git Bash and some custom shells may not report exit codes to VS Code's terminal API consistently.
 
-Press F5 to test in an Extension Development Host window.
+---
+
+## Troubleshooting
+
+**No sound playing?**
+- Check the status bar — ensure the 🔔 icon shows sound is enabled
+- Try **Test Sound** from the status bar to confirm audio is working
+- Check your system volume
+- Enable Debug Mode and check the Output panel for details
+
+**Not detecting failures?**
+- Switch to a **PowerShell** terminal — Git Bash has limited exit code reporting
+- Enable Debug Mode to see what events the extension is receiving
+
+**Sound not working over SSH / Remote?**
+- Remote environments typically have no audio device on the local machine
+- This is a known limitation of remote development — the sound plays server-side where there is no audio output
+
+**Cooldown setting not applying?**
+- Ensure the value is a number (milliseconds), not a string
+- Restart VS Code after changing the setting
+
+---
+
+## Privacy & Security
+
+- ✅ **No data collection** — the extension does not collect, store, or transmit any information
+- ✅ **No network access** — all operations are entirely local
+- ✅ **No file modification** — the extension only reads terminal events and outputs audio
+- ✅ **Audio uses OS built-in capabilities** — no external audio libraries or servers
+- ✅ **Fully transparent** — source code is publicly available on GitHub
+
+---
+
+## Contributing
+
+Contributions are welcome. Please open an issue to discuss what you'd like to change before submitting a pull request.
+
+- [Report a Bug](https://github.com/raghul-tech/faah-terminal-alert/issues)
+- [Request a Feature](https://github.com/raghul-tech/faah-terminal-alert/issues)
+- [Contributing Guide](CONTRIBUTING.md)
+- [Code of Conduct](CODE_OF_CONDUCT.md)
 
 ---
 
 ## License
 
-[MIT License](https://github.com/raghul-tech/faah-terminal-alert/blob/main/LICENSE)
+[MIT](LICENSE) — free to use, modify, and distribute.
 
 ---
 
-## Additional Resources
-
-- [Security Policy](https://github.com/raghul-tech/faah-terminal-alert/blob/main/SECURITY.md)
-- [Privacy Policy](https://github.com/raghul-tech/faah-terminal-alert/blob/main/PRIVACY.md)
-- [Support](https://github.com/raghul-tech/faah-terminal-alert/blob/main/SUPPORT.md)
-- [Contributing](https://github.com/raghul-tech/faah-terminal-alert/blob/main/CONTRIBUTING.md)
-- [Code of Conduct](https://github.com/raghul-tech/faah-terminal-alert/blob/main/CODE_OF_CONDUCT.md)
-
----
-
-## 🤝 Contributing
-
-Contributions welcome. Please open an issue or submit a pull request.
-
----
-
-Made for developers who need audio feedback for terminal errors.
+*Made for developers who'd rather hear a sound than stare at a terminal.*
