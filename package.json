@@ -1,6 +1,6 @@
 {
   "name": "faah-terminal-alert-ext",
-  "displayName": "FAAH Terminal Alert",
+  "displayName": "FAAH Terminal Alert !",
   "description": "Plays a sound when terminal commands exit with an error. Useful for long builds, tests, and CI/CD workflows.",
   "version": "1.0.0",
   "publisher": "raghul-tech",
