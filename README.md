@@ -52,7 +52,7 @@ No more switching back to VS Code to check if your long build finished — or wo
 
 **From a `.vsix` file:**
 ```bash
-code --install-extension raghul-tech.faah-terminal-alert-1.0.0.vsix
+code --install-extension raghul-tech.faah-terminal-alert-ext-1.0.0.vsix
 ```
 
 ---

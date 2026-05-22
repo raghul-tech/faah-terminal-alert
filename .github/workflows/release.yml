@@ -89,11 +89,11 @@ jobs:
 
             **Install:**
             ```bash
-            code --install-extension raghul-tech.faah-terminal-alert
+            code --install-extension raghul-tech.faah-terminal-alert-ext
             ```
             Or search **FAAH Terminal Alert** in the VS Code Extensions panel.
 
-            **Links:** [Marketplace](https://marketplace.visualstudio.com/items?itemName=raghul-tech.faah-terminal-alert) · [Changelog](https://github.com/raghul-tech/faah-terminal-alert/blob/main/CHANGELOG.md) · [Issues](https://github.com/raghul-tech/faah-terminal-alert/issues)
+            **Links:** [Marketplace](https://marketplace.visualstudio.com/items?itemName=raghul-tech.faah-terminal-alert-ext) · [Changelog](https://github.com/raghul-tech/faah-terminal-alert/blob/main/CHANGELOG.md) · [Issues](https://github.com/raghul-tech/faah-terminal-alert/issues)
           draft: false
           prerelease: false
           files: "*.vsix"
@@ -120,4 +120,4 @@ jobs:
         if: steps.tag_check.outputs.EXISTS == 'false'
         run: |
           echo "Released FAAH Terminal Alert v${{ steps.version.outputs.VERSION }}"
-          echo "Marketplace: https://marketplace.visualstudio.com/items?itemName=raghul-tech.faah-terminal-alert"
+          echo "Marketplace: https://marketplace.visualstudio.com/items?itemName=raghul-tech.faah-terminal-alert-ext"
